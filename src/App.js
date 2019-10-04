@@ -1,4 +1,5 @@
 import React from 'react';
+import UserList from "./components/UserList.js";
 import './App.css';
 /*
 // 20191004153000
@@ -39,19 +40,6 @@ import './App.css';
 }
 */
 class App extends React.Component {
-   constructor() {
-      super();
-      this.state = {
-         username: "",
-         userData: {},
-         followers: []
-      }
-   }
-
-   componentDidMount() {
-      // get data from GitHub
-   }
-
    render() {
       return (
          <div className="App">
