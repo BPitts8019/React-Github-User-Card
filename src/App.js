@@ -38,11 +38,34 @@ import './App.css';
    "updated_at": "2019-09-18T02:00:56Z"
 }
 */
-function App() {
-   return (
-      <div className="App">
-      </div>
-   );
+class App extends React.Component {
+   constructor() {
+      super();
+      this.state = {
+         username: "",
+         userData: {},
+         followers: []
+      }
+   }
+
+   componentDidMount() {
+      // get data from GitHub
+   }
+
+   render() {
+      return (
+         <div className="App">
+            <header>
+               <img src="./images/lambdalogo.png" alt="Lambda Logo" />
+               <p>❤️'s</p>
+               <img src="./images/githublogo.png" alt="GitHub Logo" />
+            </header>
+            <div class="cards">
+               <h1>Show some Cards here</h1>
+            </div>
+         </div>
+      );
+   }
 }
 
 export default App;
