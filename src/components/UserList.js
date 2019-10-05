@@ -9,6 +9,11 @@ class UserList extends React.Component {
          user_query: "BPitts8019"
       }
    }
+   // handleChange = (e) => {
+   //    this.setState({
+   //        name: e.target.value
+   //    })
+   // }
 
    get USER_DATA () {
       return {
@@ -105,8 +110,16 @@ class UserList extends React.Component {
    // }
 
    render () {
+      console.log(
+         (this.state.github_data)
+         ? this.state.github_data
+         : "no data"
+      );
+
       return (
-         <h1>Loading GitHub Data...</h1>
+         (this.state.github_data)
+         ?  <UserCard data={this.state.github_data} />
+         :  <h1>Loading GitHub Data...</h1>
       );
    }
 }
