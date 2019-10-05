@@ -12,47 +12,8 @@ class UserList extends React.Component {
       }
    }
 
-   getUserData = login => {
-      
-   };
-
    componentDidMount () {
-      // this.setState({
-      //    github_data: {
-      //       "login": "BPitts8019",
-      //       "id": 31142450,
-      //       "node_id": "MDQ6VXNlcjMxMTQyNDUw",
-      //       "avatar_url": "https://avatars3.githubusercontent.com/u/31142450?v=4",
-      //       "gravatar_id": "",
-      //       "url": "https://api.github.com/users/BPitts8019",
-      //       "html_url": "https://github.com/BPitts8019",
-      //       "followers_url": "https://api.github.com/users/BPitts8019/followers",
-      //       "following_url": "https://api.github.com/users/BPitts8019/following{/other_user}",
-      //       "gists_url": "https://api.github.com/users/BPitts8019/gists{/gist_id}",
-      //       "starred_url": "https://api.github.com/users/BPitts8019/starred{/owner}{/repo}",
-      //       "subscriptions_url": "https://api.github.com/users/BPitts8019/subscriptions",
-      //       "organizations_url": "https://api.github.com/users/BPitts8019/orgs",
-      //       "repos_url": "https://api.github.com/users/BPitts8019/repos",
-      //       "events_url": "https://api.github.com/users/BPitts8019/events{/privacy}",
-      //       "received_events_url": "https://api.github.com/users/BPitts8019/received_events",
-      //       "type": "User",
-      //       "site_admin": false,
-      //       "name": "Bradley Pitts",
-      //       "company": null,
-      //       "blog": "",
-      //       "location": "Phoenix, AZ",
-      //       "email": null,
-      //       "hireable": null,
-      //       "bio": null,
-      //       "public_repos": 44,
-      //       "public_gists": 0,
-      //       "followers": 1,
-      //       "following": 3,
-      //       "created_at": "2017-08-18T19:49:32Z",
-      //       "updated_at": "2019-09-18T02:00:56Z"
-      //    }
-      // });
-      let baseUser = this.getUserData();
+      //Get base user data from GitHub
       axios
          .get(`https://api.github.com/users/${this.state.user_query}`)
          .then(response => {
@@ -61,6 +22,7 @@ class UserList extends React.Component {
                base_user: response.data
             });
 
+            //if user has followers, then grab the list
             if (response.data.followers > 0) {
                return axios.get(`https://api.github.com/users/${this.state.user_query}/followers`);
             } else {
@@ -74,6 +36,9 @@ class UserList extends React.Component {
          .then(response => {
             console.log(response.data);
 
+            //we only get here if there were followers
+            //process the list of followers into a list of usernames,
+            //then add a few extra
             let followerNames = response.data.map(follower => follower.login);
             followerNames = [
                ...followerNames,
@@ -97,13 +62,8 @@ class UserList extends React.Component {
             
          })
          .then(followers => {
-            // console.log(followers);
-
-            // console.log([
-            //    this.state.base_user,
-            //    ...followers.map(follower => follower.data)
-            // ]);
-
+            //we only get here if all of the promises have been resolved
+            //combine all the user data into one array
             this.setState({
                allUsers: [
                   this.state.base_user,
@@ -112,7 +72,7 @@ class UserList extends React.Component {
             });
          })
          .catch(error => {
-            console.error(`There was a problem getting ${this.state.username}'s user data from GitHub!`);
+            console.error(`There was a problem getting user data from GitHub!`);
             console.error(error);
          })
    }
