@@ -12,6 +12,10 @@ class UserList extends React.Component {
       }
    }
 
+   getUserData = login => {
+      
+   };
+
    componentDidMount () {
       // this.setState({
       //    github_data: {
@@ -48,6 +52,7 @@ class UserList extends React.Component {
       //       "updated_at": "2019-09-18T02:00:56Z"
       //    }
       // });
+      let baseUser = this.getUserData();
       axios
          .get(`https://api.github.com/users/${this.state.user_query}`)
          .then(response => {
@@ -68,10 +73,41 @@ class UserList extends React.Component {
          })
          .then(response => {
             console.log(response.data);
+
+            let followerNames = response.data.map(follower => follower.login);
+            followerNames = [
+               ...followerNames,
+               // "thisshouldError",
+               "tetondan",
+               "dustinmyers",
+               "justsml",
+               "luishrd",
+               "bigknell"
+            ];
+            console.log(followerNames);
+
+            const followersList = followerNames.map(follower => axios.get(`https://api.github.com/users/${follower}`));
+            return new Promise((resolve, reject) => {
+               if (followersList && followersList.length > 0) {
+                  resolve(axios.all(followersList));
+               } else {
+                  reject(Error("No Followers to process"));
+               }
+            });
+            
+         })
+         .then(followers => {
+            // console.log(followers);
+
+            // console.log([
+            //    this.state.base_user,
+            //    ...followers.map(follower => follower.data)
+            // ]);
+
             this.setState({
                allUsers: [
                   this.state.base_user,
-                  ...response.data
+                  ...followers.map(follower => follower.data)
                ]
             });
          })
